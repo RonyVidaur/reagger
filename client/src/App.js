@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {
-  ApolloClient,
-  gql,
-  graphql,
-  ApolloProvider,
-} from 'react-apollo'
-import {  makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+
+import ApolloClient from 'apollo-client'
+import { graphql, ApolloProvider } from 'react-apollo'
+import gql from 'graphql-tag'
+
+import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
 import { mockNetworkInterfaceWithSchema } from 'apollo-test-utils'
 import { typeDefs } from './schema'
 
@@ -16,8 +15,9 @@ addMockFunctionsToSchema({ schema })
 
 const mockNetworkInterface = mockNetworkInterfaceWithSchema({ schema })
 
+
 const client = new ApolloClient({
-  networkInterface: mockNetworkInterface
+  networkInterface: mockNetworkInterface,
 })
 
 const ChannelsList = ({ data: {loading, error, channels }}) => {
@@ -44,7 +44,6 @@ const channelsListQuery = gql`
 
 const ChannelsListWithData = graphql(channelsListQuery)(ChannelsList)
 
-
 class App extends Component {
   render() {
     return (
@@ -57,9 +56,8 @@ class App extends Component {
           <ChannelsListWithData />
         </div>
       </ApolloProvider>
-
-    );
+    )
   }
 }
 
-export default App;
+export default App 
