@@ -3,12 +3,13 @@ import logo from './logo.svg'
 import './App.css'
 
 import ApolloClient from 'apollo-client'
-import { graphql, ApolloProvider, createNetworkInterface } from 'react-apollo'
-import gql from 'graphql-tag'
+import { ApolloProvider, createNetworkInterface } from 'react-apollo'
+
 
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
 
 import { typeDefs } from './schema'
+import ChannelsListWithData from './components/ChannelsListWithData'
 
 const schema = makeExecutableSchema({ typeDefs })
 addMockFunctionsToSchema({ schema })
@@ -16,33 +17,10 @@ addMockFunctionsToSchema({ schema })
 const networkInterface = createNetworkInterface({
   uri: 'http://localhost:4000/graphql',
 })
+
 const client = new ApolloClient({
   networkInterface
 })
-
-const ChannelsList = ({ data: {loading, error, channels }}) => {
-  if (loading) {
-    return <p>Loading ...</p>
-  }
-  if (error) {
-    return <p>{error.message}</p>
-  }
-
-  return <ul>
-    { channels.map( ch => <li key={ch.id}>{ch.name}</li> ) }
-  </ul>
-}
-
-const channelsListQuery = gql`
-  query ChannelsListQuery {
-    channels {
-      id
-      name
-    }
-  }
-`
-
-const ChannelsListWithData = graphql(channelsListQuery)(ChannelsList)
 
 class App extends Component {
   render() {
